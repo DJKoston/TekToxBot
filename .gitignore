@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-DiscordBot.Build/
+TekTox.Build/
 */config.json
 */appsettings.json
 */appsettings.*.json
