@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TekTox.Core.Services;
 using TekTox.DAL;
 
 namespace TekTox.Bot
@@ -27,6 +28,7 @@ namespace TekTox.Bot
                    x => x.MigrationsAssembly("TekTox.DAL.Migrations"));
             });
 
+            services.AddScoped<IEventListService, EventListService>();
             services.AddRazorPages();
 
             var serviceProvider = services.BuildServiceProvider();

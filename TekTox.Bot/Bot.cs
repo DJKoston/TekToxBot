@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TekTox.Bot.Commands;
 
 namespace TekTox.Bot
 {
@@ -22,9 +23,6 @@ namespace TekTox.Bot
         {
             var token = configuration["token"];
             var prefix = configuration["prefix"];
-            var clientid = configuration["twitch-clientid"];
-            var accesstoken = configuration["twitch-accesstoken"];
-            var refreshtoken = configuration["twitch-refreshtoken"];
 
             var config = new DiscordConfiguration
             {
@@ -56,6 +54,8 @@ namespace TekTox.Bot
             };
 
             Commands = Client.UseCommandsNext(commandsConfig);
+
+            Commands.RegisterCommands<EventCommands>();
 
             Console.ResetColor();
 
