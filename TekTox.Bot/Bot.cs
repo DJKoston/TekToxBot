@@ -70,7 +70,7 @@ namespace TekTox.Bot
 
         private Task OnHeartbeat(DiscordClient sender, HeartbeatEventArgs e)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

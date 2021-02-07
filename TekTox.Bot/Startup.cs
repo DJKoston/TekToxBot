@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Hosting;
+using TekTox.DAL;
 
 namespace TekTox.Bot
 {
@@ -25,7 +24,7 @@ namespace TekTox.Bot
             services.AddDbContext<RPGContext>(options =>
             {
                 options.UseSqlServer(SqlServerConnectionString,
-                   x => x.MigrationsAssembly("DiscordBot.DAL.Migrations"));
+                   x => x.MigrationsAssembly("TekTox.DAL.Migrations"));
             });
 
             services.AddRazorPages();

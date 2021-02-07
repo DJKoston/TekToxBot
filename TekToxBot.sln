@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TekTox.Bot", "TekTox.Bot\TekTox.Bot.csproj", "{54CD9596-2148-49AD-9A7B-84782C1717F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61A1CD48-242E-4D10-83C2-87C2D1BD1295} = {61A1CD48-242E-4D10-83C2-87C2D1BD1295}
+		{B72899AB-346E-4AB4-8C69-1D452EBE2314} = {B72899AB-346E-4AB4-8C69-1D452EBE2314}
+		{320CABE9-264A-4D02-BAA5-F797639F4677} = {320CABE9-264A-4D02-BAA5-F797639F4677}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TekTox.Bot", "TekTox.Bot", "{E7C47CF1-877E-4970-971F-A717FA54E967}"
 EndProject
@@ -15,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TekTox.DAL", "TekTox.DAL", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TekTox.DAL.Migrations", "TekTox.DAL.Migrations\TekTox.DAL.Migrations.csproj", "{320CABE9-264A-4D02-BAA5-F797639F4677}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TekTox.DAL", "TekTox.DAL\TekTox.DAL.csproj", "{61A1CD48-242E-4D10-83C2-87C2D1BD1295}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TekTox.DAL", "TekTox.DAL\TekTox.DAL.csproj", "{61A1CD48-242E-4D10-83C2-87C2D1BD1295}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

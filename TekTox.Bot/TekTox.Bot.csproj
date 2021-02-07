@@ -20,4 +20,10 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TekTox.Core\TekTox.Core.csproj" />
+    <ProjectReference Include="..\TekTox.DAL.Migrations\TekTox.DAL.Migrations.csproj" />
+    <ProjectReference Include="..\TekTox.DAL\TekTox.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
