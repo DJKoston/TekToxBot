@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TekTox.Bot", "TekTox.Bot\TekTox.Bot.csproj", "{54CD9596-2148-49AD-9A7B-84782C1717F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TekTox.Bot", "TekTox.Bot\TekTox.Bot.csproj", "{54CD9596-2148-49AD-9A7B-84782C1717F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TekTox.Bot", "TekTox.Bot", "{E7C47CF1-877E-4970-971F-A717FA54E967}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TekTox.Core", "TekTox.Core", "{FEEBF9F5-57A8-44FA-AB50-6120900B71BF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TekTox.Core", "TekTox.Core\TekTox.Core.csproj", "{B72899AB-346E-4AB4-8C69-1D452EBE2314}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TekTox.DAL", "TekTox.DAL", "{8EE089AF-4AFF-4B27-A15B-C4102AFCACCC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TekTox.DAL.Migrations", "TekTox.DAL.Migrations\TekTox.DAL.Migrations.csproj", "{320CABE9-264A-4D02-BAA5-F797639F4677}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TekTox.DAL", "TekTox.DAL\TekTox.DAL.csproj", "{61A1CD48-242E-4D10-83C2-87C2D1BD1295}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +27,27 @@ Global
 		{54CD9596-2148-49AD-9A7B-84782C1717F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54CD9596-2148-49AD-9A7B-84782C1717F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54CD9596-2148-49AD-9A7B-84782C1717F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B72899AB-346E-4AB4-8C69-1D452EBE2314}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B72899AB-346E-4AB4-8C69-1D452EBE2314}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B72899AB-346E-4AB4-8C69-1D452EBE2314}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B72899AB-346E-4AB4-8C69-1D452EBE2314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{320CABE9-264A-4D02-BAA5-F797639F4677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320CABE9-264A-4D02-BAA5-F797639F4677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320CABE9-264A-4D02-BAA5-F797639F4677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320CABE9-264A-4D02-BAA5-F797639F4677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A1CD48-242E-4D10-83C2-87C2D1BD1295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A1CD48-242E-4D10-83C2-87C2D1BD1295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A1CD48-242E-4D10-83C2-87C2D1BD1295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A1CD48-242E-4D10-83C2-87C2D1BD1295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{54CD9596-2148-49AD-9A7B-84782C1717F4} = {E7C47CF1-877E-4970-971F-A717FA54E967}
+		{B72899AB-346E-4AB4-8C69-1D452EBE2314} = {FEEBF9F5-57A8-44FA-AB50-6120900B71BF}
+		{320CABE9-264A-4D02-BAA5-F797639F4677} = {8EE089AF-4AFF-4B27-A15B-C4102AFCACCC}
+		{61A1CD48-242E-4D10-83C2-87C2D1BD1295} = {8EE089AF-4AFF-4B27-A15B-C4102AFCACCC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D3291A7-B751-4092-A00B-7E2883350DB5}
