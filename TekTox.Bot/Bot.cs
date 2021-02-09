@@ -2,21 +2,17 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
-using Microsoft.Extensions.DependencyInjection;
 using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TekTox.Bot.Commands;
 using TekTox.Core.Services;
-using TekTox.DAL;
 using TekTox.DAL.Models;
-using System.Threading;
 
 namespace TekTox.Bot
 {
@@ -44,6 +40,7 @@ namespace TekTox.Bot
             Client = new DiscordClient(config);
 
             Client.Heartbeated += OnHeartbeat;
+            Client.Ready += OnClientReady;
 
             var botVersion = typeof(Bot).Assembly.GetName().Version.ToString();
 
@@ -75,6 +72,15 @@ namespace TekTox.Bot
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Connected to Discord!");
             Console.ResetColor();
+        }
+
+        private async Task OnClientReady(DiscordClient sender, ReadyEventArgs e)
+        {
+            await Client.UpdateStatusAsync(new DiscordActivity
+            {
+                ActivityType = ActivityType.Watching,
+                Name = "for tech news!",
+            }, UserStatus.Online);
         }
 
         private readonly IEventListService _eventListService;

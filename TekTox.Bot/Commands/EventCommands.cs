@@ -26,6 +26,7 @@ namespace TekTox.Bot.Commands
         }
 
         [Command("add")]
+        [RequireRoles(RoleCheckMode.Any, "Tokker")]
         public async Task AddEvent(CommandContext ctx)
         {
             var thirdStep = new TextStep("Who will be taking part in this event?", null);
@@ -57,8 +58,12 @@ namespace TekTox.Bot.Commands
             {
                 Title = "Event Created:",
                 Color = DiscordColor.DarkRed,
-                Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()}\n\nEvent Name: {newEvent.EventName}\n\nAttendees: {newEvent.Attendees}",
+                Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {newEvent.EventName}\n\nAttendees: {newEvent.Attendees}",
             };
+
+            embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+            embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
             embed.WithFooter($"Event ID: {newEvent.Id}");
 
             var eventChannel = ctx.Guild.GetChannel(808076578725822474);
@@ -68,6 +73,7 @@ namespace TekTox.Bot.Commands
         }
 
         [Command("delete")]
+        [RequireRoles(RoleCheckMode.Any, "Tokker")]
         public async Task DeleteEvent(CommandContext ctx, int eventId)
         {
             var selectedEvent = _context.EventLists.Where(x => x.Id == eventId).First();
