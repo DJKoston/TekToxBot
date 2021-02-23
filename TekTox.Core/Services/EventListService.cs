@@ -13,8 +13,10 @@ namespace TekTox.Core.Services
     {
         Task CreateNewEvent(EventList eventList);
         Task DeleteEvent(EventList eventList);
+        Task EditEvent(EventList eventList);
         List<EventList> ListEvents();
         Task<EventList> GetEvent(DateTime dateTime);
+        Task<EventList> GetEventByID(int eventId);
     }
     public class EventListService : IEventListService
     {
@@ -42,11 +44,27 @@ namespace TekTox.Core.Services
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
 
+        public async Task EditEvent(EventList eventList)
+        {
+            using var context = new RPGContext(_options);
+
+            context.Update(eventList);
+
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
         public async Task<EventList> GetEvent(DateTime dateTime)
         {
             using var context = new RPGContext(_options);
 
             return await context.EventLists.FirstOrDefaultAsync(x => x.DateTime.ToString() == dateTime.ToString());
+        }
+
+        public async Task<EventList> GetEventByID(int eventId)
+        {
+            using var context = new RPGContext(_options);
+
+            return await context.EventLists.FirstOrDefaultAsync(x => x.Id == eventId);
         }
 
         public List<EventList> ListEvents()

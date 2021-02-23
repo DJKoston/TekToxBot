@@ -9,5 +9,7 @@ namespace TekTox.DAL.Models
         public string DateTime { get; set; }
         public string EventName { get; set; }
         public string Attendees { get; set; }
+        public ulong EventMessageId { get; set; }
+        public ulong EventChannelId { get; set; }
     }
 }

@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TekTox.Bot.Commands;
@@ -95,6 +98,20 @@ namespace TekTox.Bot
 
                 foreach (EventList anEvent in allEvents)
                 {
+                    var membersString = anEvent.Attendees.Replace("<@!", "");
+                    var allMembersString = membersString.Replace(">", "");
+
+                    List<string> memberIdsList = allMembersString.Split(new char[] { ' ' }).ToList();
+
+                    List<ulong> ulongList = new List<ulong>();
+
+                    foreach (string memberId in memberIdsList)
+                    {
+                        var newMemberId = UInt64.Parse(memberId);
+
+                        ulongList.Add(newMemberId);
+                    }
+
                     var eventDateTime = anEvent.DateTime;
                     var parsedDate = DateTime.Parse(eventDateTime);
 
@@ -122,9 +139,12 @@ namespace TekTox.Bot
                     {
                         var guild = await sender.GetGuildAsync(804875172157980704);
 
-                        var channel = guild.GetChannel(804875175883178076);
+                        foreach (ulong ULong in ulongList)
+                        {
+                            var member = await guild.GetMemberAsync(ULong);
 
-                        await channel.SendMessageAsync($"Reminder: {anEvent.Attendees} don't forget!\n\nYou are Scheduled for TekTox recording tomorrow at {parsedDate.AddHours(-6).ToShortTimeString()} (CST) to discuss {anEvent.EventName}.\n\nLooking forward to seeing you there.\n\nYou should have already have given us your notice if you cannot make it by this point.", embed: embed).ConfigureAwait(false);
+                            await member.SendMessageAsync($"Reminder: Don't forget!\n\nYou are Scheduled for TekTox recording tomorrow at {parsedDate.AddHours(-6).ToShortTimeString()} (CST) to discuss {anEvent.EventName}.\n\nLooking forward to seeing you there.\n\nYou should have already have given us your notice if you cannot make it by this point.", embed: embed).ConfigureAwait(false);
+                        }
                     }
 
                     if (DateTime.Now.Day == tenMinWarning.Day && DateTime.Now.Month == tenMinWarning.Month && DateTime.Now.Year == tenMinWarning.Year && DateTime.Now.Hour == tenMinWarning.Hour && DateTime.Now.Minute == tenMinWarning.Minute)
@@ -133,11 +153,36 @@ namespace TekTox.Bot
 
                         var channel = guild.GetChannel(804875175883178076);
 
-                        await channel.SendMessageAsync($"Reminder: {anEvent.Attendees} don't forget!\n\nYou are Scheduled for TekTox recording in 10 minutes to discuss {anEvent.EventName}.\n\nLooking forward to seeing you there.\n\nIf you can't make it, please DM Dude ASAP.").ConfigureAwait(false);
+                        foreach (ulong ULong in ulongList)
+                        {
+                            var member = await guild.GetMemberAsync(ULong);
+
+                            await member.SendMessageAsync($"Reminder: Don't forget!\n\nYou are Scheduled for TekTox recording in 10 mins to discuss {anEvent.EventName}.\n\nLooking forward to seeing you there.\n\nIf you can't make it, please DM Dude ASAP.").ConfigureAwait(false);
+                        }
+
+                        await channel.SendMessageAsync($"Reminder: We are recording a TekTox episode in 10 minutes to discuss {anEvent.EventName}.\n\nAll attendee's have been DM'ed\n\nIf you can't make it or if you wish to take part all of a sudden, please DM Dude ASAP.").ConfigureAwait(false);
+                    }
+
+                    if (DateTime.Now > parsedDate)
+                    {
+                        Console.WriteLine($"Event Passed: {anEvent.EventName}");
+
+                        await _eventListService.DeleteEvent(anEvent);
+
+                        var guild = await sender.GetGuildAsync(804875172157980704);
+                        var eventChannel = guild.GetChannel(anEvent.EventChannelId);
+                        var messageToDelete = await eventChannel.GetMessageAsync(anEvent.EventMessageId);
+
+                        await messageToDelete.DeleteAsync();
+
+                        Console.WriteLine($"Event Deleted: {anEvent.EventName}");
                     }
                 }
-            });
 
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.WriteLine($"Heartbeat Complete @ {DateTime.Now}");
+                Console.ResetColor();
+            }).Start();
             return Task.CompletedTask;
         }
     }

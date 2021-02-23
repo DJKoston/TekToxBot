@@ -69,7 +69,12 @@ namespace TekTox.Bot.Commands
             var eventChannel = ctx.Guild.GetChannel(808076578725822474);
 
             await ctx.Channel.SendMessageAsync(embed: embed).ConfigureAwait(false);
-            await eventChannel.SendMessageAsync(embed: embed).ConfigureAwait(false);
+            var eventMessage = await eventChannel.SendMessageAsync(embed: embed).ConfigureAwait(false);
+
+            newEvent.EventChannelId = eventChannel.Id;
+            newEvent.EventMessageId = eventMessage.Id;
+
+            await _eventService.EditEvent(newEvent);
         }
 
         [Command("delete")]
@@ -104,6 +109,11 @@ namespace TekTox.Bot.Commands
 
                 await _eventService.DeleteEvent(selectedEvent);
 
+                var eventChannel = ctx.Guild.GetChannel(selectedEvent.EventChannelId);
+                var messageToDelete = await eventChannel.GetMessageAsync(selectedEvent.EventMessageId);
+
+                await messageToDelete.DeleteAsync();
+
                 await ctx.Channel.SendMessageAsync("Event Deleted!").ConfigureAwait(false);
             }
 
@@ -112,6 +122,236 @@ namespace TekTox.Bot.Commands
                 await confirmMessage.DeleteAsync();
 
                 await ctx.Channel.SendMessageAsync("Cancelled deleting the event.").ConfigureAwait(false);
+            }
+        }
+
+        [Command("edit")]
+        [RequireRoles(RoleCheckMode.Any, "Tokker")]
+        public async Task EditEvent(CommandContext ctx, int eventId, string itemToEdit)
+        {
+            var eventToEdit = await _eventService.GetEventByID(eventId);
+
+            if (itemToEdit.ToLower() == "datetime")
+            {
+                var firstStep = new EditDateTimeStep("What is the date/time you wish this event to take place on?\nStyle of Response Needed: DD/MM/YYYY HH:MM", null);
+
+                firstStep.OnValidResult += (result) => eventToEdit.DateTime = $"{result}";
+
+                var inputDialogueHandler = new DialogueHandler(
+                ctx.Client,
+                ctx.Channel,
+                ctx.User,
+                firstStep
+                );
+
+                bool succeeded = await inputDialogueHandler.ProcessDialogue().ConfigureAwait(false);
+
+                if (!succeeded) { return; }
+
+                await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
+
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+
+                var editedEmbed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Edited:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                var embed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Created:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                embed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                DiscordEmbed newEmbed = embed;
+
+                var eventChannel = ctx.Guild.GetChannel(eventToEdit.EventChannelId);
+                var eventMessage = await eventChannel.GetMessageAsync(eventToEdit.EventMessageId);
+
+                await ctx.Channel.SendMessageAsync(embed: editedEmbed).ConfigureAwait(false);
+                await eventMessage.ModifyAsync(embed: newEmbed).ConfigureAwait(false);
+
+                return;
+            }
+
+            if (itemToEdit.ToLower() == "name")
+            {
+                var firstStep = new EditTextStep("What is the Event name?", null);
+
+                firstStep.OnValidResult += (result) => eventToEdit.EventName = $"{result}";
+
+                var inputDialogueHandler = new DialogueHandler(
+                ctx.Client,
+                ctx.Channel,
+                ctx.User,
+                firstStep
+                );
+
+                bool succeeded = await inputDialogueHandler.ProcessDialogue().ConfigureAwait(false);
+
+                if (!succeeded) { return; }
+
+                await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
+
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+
+                var editedEmbed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Edited:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                editedEmbed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                var embed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Created:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                embed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                DiscordEmbed newEmbed = embed;
+
+                var eventChannel = ctx.Guild.GetChannel(eventToEdit.EventChannelId);
+                var eventMessage = await eventChannel.GetMessageAsync(eventToEdit.EventMessageId);
+
+                await ctx.Channel.SendMessageAsync(embed: editedEmbed).ConfigureAwait(false);
+                await eventMessage.ModifyAsync(embed: newEmbed).ConfigureAwait(false);
+
+                return;
+            }
+
+            if (itemToEdit.ToLower() == "attendees")
+            {
+                var firstStep = new EditTextStep("Who will be taking part in this event?", null);
+
+                firstStep.OnValidResult += (result) => eventToEdit.Attendees = $"{result}";
+
+                var inputDialogueHandler = new DialogueHandler(
+                ctx.Client,
+                ctx.Channel,
+                ctx.User,
+                firstStep
+                );
+
+                bool succeeded = await inputDialogueHandler.ProcessDialogue().ConfigureAwait(false);
+
+                if (!succeeded) { return; }
+
+                await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
+
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+
+                var editedEmbed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Edited:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                editedEmbed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                var embed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Created:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                embed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                DiscordEmbed newEmbed = embed;
+
+                var eventChannel = ctx.Guild.GetChannel(eventToEdit.EventChannelId);
+                var eventMessage = await eventChannel.GetMessageAsync(eventToEdit.EventMessageId);
+
+                await ctx.Channel.SendMessageAsync(embed: editedEmbed).ConfigureAwait(false);
+                await eventMessage.ModifyAsync(embed: newEmbed).ConfigureAwait(false);
+
+                return;
+            }
+
+            if (itemToEdit.ToLower() == "all")
+            {
+                var thirdStep = new EditTextStep("Who will be taking part in this event?", null);
+                var secondStep = new EditTextStep("What is the Event name?", thirdStep);
+                var firstStep = new EditDateTimeStep("What is the date/time you wish this event to take place on?\nStyle of Response Needed: DD/MM/YYYY HH:MM", secondStep);
+
+                firstStep.OnValidResult += (result) => eventToEdit.DateTime = $"{result}";
+                secondStep.OnValidResult += (result) => eventToEdit.EventName = $"{result}";
+                thirdStep.OnValidResult += (result) => eventToEdit.Attendees = $"{result}";
+
+                var inputDialogueHandler = new DialogueHandler(
+                ctx.Client,
+                ctx.Channel,
+                ctx.User,
+                firstStep
+                );
+
+                bool succeeded = await inputDialogueHandler.ProcessDialogue().ConfigureAwait(false);
+
+                if (!succeeded) { return; }
+
+                await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
+
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+
+                var editedEmbed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Edited:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                editedEmbed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                var embed = new DiscordEmbedBuilder
+                {
+                    Title = "Event Created:",
+                    Color = DiscordColor.DarkRed,
+                    Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
+                };
+
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+
+                embed.WithFooter($"Event ID: {eventToEdit.Id}");
+
+                DiscordEmbed newEmbed = embed;
+
+                var eventChannel = ctx.Guild.GetChannel(eventToEdit.EventChannelId);
+                var eventMessage = await eventChannel.GetMessageAsync(eventToEdit.EventMessageId);
+
+                await ctx.Channel.SendMessageAsync(embed: editedEmbed).ConfigureAwait(false);
+                await eventMessage.ModifyAsync(embed: newEmbed).ConfigureAwait(false);
+
+                return;
             }
         }
     }
