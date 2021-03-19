@@ -52,7 +52,8 @@ namespace TekTox.Bot.Commands
 
             await _eventService.CreateNewEvent(newEvent).ConfigureAwait(false);
 
-            var parsedTimeDate = DateTime.Parse(newEvent.DateTime).AddHours(-6);
+            //Change this to -6 or -7 depending on DST
+            var parsedTimeDate = DateTime.Parse(newEvent.DateTime).AddHours(-5);
 
             var embed = new DiscordEmbedBuilder
             {
@@ -61,8 +62,8 @@ namespace TekTox.Bot.Commands
                 Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {newEvent.EventName}\n\nAttendees: {newEvent.Attendees}",
             };
 
-            embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-            embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+            embed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+            embed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
             embed.WithFooter($"Event ID: {newEvent.Id}");
 
@@ -150,7 +151,8 @@ namespace TekTox.Bot.Commands
 
                 await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
 
-                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+                //Change this to -6 or -5 depending on DST
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-5);
 
                 var editedEmbed = new DiscordEmbedBuilder
                 {
@@ -166,8 +168,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 embed.WithFooter($"Event ID: {eventToEdit.Id}");
 
@@ -201,7 +203,8 @@ namespace TekTox.Bot.Commands
 
                 await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
 
-                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+                //Change this to -6 or -5 depending on DST
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-5);
 
                 var editedEmbed = new DiscordEmbedBuilder
                 {
@@ -210,8 +213,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 editedEmbed.WithFooter($"Event ID: {eventToEdit.Id}");
 
@@ -222,8 +225,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 embed.WithFooter($"Event ID: {eventToEdit.Id}");
 
@@ -257,7 +260,8 @@ namespace TekTox.Bot.Commands
 
                 await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
 
-                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+                //Change this to -6 or -7 depending on DST
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-5);
 
                 var editedEmbed = new DiscordEmbedBuilder
                 {
@@ -266,8 +270,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 editedEmbed.WithFooter($"Event ID: {eventToEdit.Id}");
 
@@ -278,8 +282,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 embed.WithFooter($"Event ID: {eventToEdit.Id}");
 
@@ -317,7 +321,8 @@ namespace TekTox.Bot.Commands
 
                 await _eventService.EditEvent(eventToEdit).ConfigureAwait(false);
 
-                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-6);
+                //Change this to -6 or -7 depending on DST
+                var parsedTimeDate = DateTime.Parse(eventToEdit.DateTime).AddHours(-5);
 
                 var editedEmbed = new DiscordEmbedBuilder
                 {
@@ -326,8 +331,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                editedEmbed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+                editedEmbed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 editedEmbed.WithFooter($"Event ID: {eventToEdit.Id}");
 
@@ -338,8 +343,8 @@ namespace TekTox.Bot.Commands
                     Description = $"Date/Time: {parsedTimeDate.ToShortDateString()} at {parsedTimeDate.ToShortTimeString()} (CST)\n\nEvent Name: {eventToEdit.EventName}\n\nAttendees: {eventToEdit.Attendees}",
                 };
 
-                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-1).ToLongDateString()} at {parsedTimeDate.AddHours(-1).ToShortTimeString()}");
-                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(6).ToLongDateString()} at {parsedTimeDate.AddHours(6).ToShortTimeString()}");
+                embed.AddField("MST:", $"{parsedTimeDate.AddHours(-2).ToLongDateString()} at {parsedTimeDate.AddHours(-2).ToShortTimeString()}");
+                embed.AddField("GMT:", $"{parsedTimeDate.AddHours(5).ToLongDateString()} at {parsedTimeDate.AddHours(5).ToShortTimeString()}");
 
                 embed.WithFooter($"Event ID: {eventToEdit.Id}");
 

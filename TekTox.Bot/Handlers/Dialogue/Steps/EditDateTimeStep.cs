@@ -85,7 +85,7 @@ namespace TekTox.Bot.Handlers.Dialogue.Steps
 
                 var parsedDateTime = DateTime.Parse(messageResult.Result.Content);
 
-                var UKTime = parsedDateTime.AddHours(6);
+                var UKTime = parsedDateTime.AddHours(5);
 
                 OnValidResult(UKTime.ToString());
 
